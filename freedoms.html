@@ -1,0 +1,386 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Freedoms of the Air</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@600;700&family=JetBrains+Mono:wght@500;600&display=swap"><style>body{margin:0}[hidden]{display:none!important}
+/* Layout: single centred column – briefing card with the diagram as the hero, controls under it, step list below. */
+:root{
+  --bg:#f4f6f9; --panel:#ffffff; --ink:#122033; --muted:#566578; --line:#c7d1dc; --grid:#e3e9f0;
+  --accent:#d48a00; --accent-ink:#2b1d00; --sky:#dcebf8; --sky2:#c4dcf2; --ground:#e9e4d4; --ground2:#d8d0b8;
+  --water:#cfe3f3; --tarmac:#4a5260; --tarmac2:#5d6676; --cloud:#ffffff;
+  --red:#d3302f; --green:#1d9a50; --blue:#2463c9; --amber:#e7a10f; --purple:#7a46c2; --teal:#138a8a;
+  --lightwhite:#fffbea; --night:#18243a; --night2:#22314d;
+  --plane:#1b3a66; --plane2:#9b2c2c; --plane3:#1d7a46; --hl:#fff1b8;
+  --f-display:"Barlow Semi Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Barlow","Segoe UI",Arial,sans-serif;
+  --f-mono:"JetBrains Mono",Consolas,monospace;
+  --svgfont:"Barlow","Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1622; --panel:#162131; --ink:#e6edf6; --muted:#9fb0c3; --line:#34465d; --grid:#223247;
+  --accent:#f0b13a; --accent-ink:#1d1300; --sky:#1b2d45; --sky2:#223a58; --ground:#3a3528; --ground2:#4a4331;
+  --water:#1d3550; --tarmac:#59616f; --tarmac2:#6b7383; --cloud:#d9e2ec;
+  --red:#ff5d5a; --green:#3ccf7d; --blue:#6aa2ff; --amber:#ffc23d; --purple:#b38cff; --teal:#3cc7c7;
+  --plane:#9cc3ff; --plane2:#ff9b8f; --plane3:#7fe0a8; --hl:#4a3d10; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1622; --panel:#162131; --ink:#e6edf6; --muted:#9fb0c3; --line:#34465d; --grid:#223247;
+  --accent:#f0b13a; --accent-ink:#1d1300; --sky:#1b2d45; --sky2:#223a58; --ground:#3a3528; --ground2:#4a4331;
+  --water:#1d3550; --tarmac:#59616f; --tarmac2:#6b7383; --cloud:#d9e2ec;
+  --red:#ff5d5a; --green:#3ccf7d; --blue:#6aa2ff; --amber:#ffc23d; --purple:#b38cff; --teal:#3cc7c7;
+  --plane:#9cc3ff; --plane2:#ff9b8f; --plane3:#7fe0a8; --hl:#4a3d10; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.wrap{max-width:980px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:14px}
+.eyebrow{margin:0;font-family:var(--f-display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.8rem;color:var(--accent)}
+h1{margin:0;font-family:var(--f-display);font-weight:700;font-size:clamp(1.5rem,4.6vw,2.2rem);line-height:1.1;text-wrap:balance}
+.lede{margin:0;color:var(--muted);max-width:65ch}
+.stage{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px;overflow:hidden}
+.stage svg{display:block;width:100%;height:auto;font-family:var(--svgfont)}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.controls button{font:600 .95rem var(--f-body);border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:8px 14px;cursor:pointer;min-width:44px;min-height:40px}
+.controls button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.controls button:focus-visible,.steps button:focus-visible,#scrub:focus-visible,#speed:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+#scrub{flex:1 1 200px;min-width:0;accent-color:var(--accent)}
+.time{font:500 .9rem var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums;min-width:4.5em;text-align:right}
+#speed{font:500 .9rem var(--f-body);background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px}
+.caption{margin:0;padding:12px 14px;border-left:4px solid var(--accent);background:var(--panel);border-radius:0 8px 8px 0;font-weight:500;min-height:3.2em}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.steps button{all:unset;box-sizing:border-box;display:grid;grid-template-columns:2em 1fr;gap:8px;width:100%;padding:8px 10px;border-radius:8px;cursor:pointer;color:var(--muted)}
+.steps button .n{font:600 .85rem var(--f-mono);color:var(--muted)}
+.steps button[aria-current="step"]{background:var(--hl);color:var(--ink)}
+.steps button[aria-current="step"] .n{color:var(--accent)}
+.keys{margin:0;padding:12px 14px 12px 32px;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+.keys li{margin:2px 0}
+.src{margin:0;color:var(--muted);font-size:.85rem}
+h2{margin:6px 0 0;font-family:var(--f-display);font-size:1.15rem;letter-spacing:.02em}
+/* SVG text and shapes */
+.lbl{font-size:15px;fill:var(--ink)} .lbl-s{font-size:12.5px;fill:var(--ink)} .lbl-xs{font-size:11px;fill:var(--muted)}
+.lbl-b{font-size:15px;font-weight:700;fill:var(--ink)} .lbl-t{font-size:19px;font-weight:700;fill:var(--ink)}
+.mut{fill:var(--muted)} .acc{fill:var(--accent)}
+.ln{stroke:var(--ink);stroke-width:1.5;fill:none} .ln-m{stroke:var(--muted);stroke-width:1.2;fill:none}
+.dash{stroke-dasharray:6 5}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto}}
+/* still mode = clean diagram for print */
+body.still{background:#fff}
+body.still .wrap>*:not(.stage){display:none}
+body.still .wrap{padding:0;max-width:none}
+body.still .stage{border:none;border-radius:0;padding:0;background:#fff}
+body.still .stage svg{font-family:Carlito,Calibri,Arial,sans-serif}
+</style></head><body><main class="wrap"><p class="eyebrow">Chapter 2 · International Organisations and Conventions</p><h1>Freedoms of the Air</h1><p class="lede">Each panel shows an airline of the home State (India) and what it may do in a foreign State. Freedoms 1–2 are technical, 3–5 commercial (Chicago 1944); 6–9 are not in any convention.</p><figure class="stage"><svg id="svg" role="img" aria-label="Freedoms of the Air" xmlns="http://www.w3.org/2000/svg"></svg></figure><div class="controls"><button type="button" id="play" class="primary">Pause</button><button type="button" id="restart">Restart</button><label class="sr" for="scrub" hidden>Timeline</label><input type="range" id="scrub" min="0" value="0" aria-label="Timeline"><span class="time" id="time">0.0 s</span><select id="speed" aria-label="Playback speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option><option value="2">2×</option></select></div><p class="caption" id="caption" aria-live="polite"></p><h2>Steps</h2><ol class="steps" id="steps"></ol><h2>Remember</h2><ul class="keys"><li>1st and 2nd freedoms – Transit Agreement 1944 (ratified by India)</li><li>3rd, 4th and 5th – Air Transport Agreement 1944 (not ratified by India)</li><li>6th = 3rd + 4th through the home State</li><li>8th and 9th are cabotage – carriage inside a foreign State</li></ul><p class="src">Air Regulations &amp; Human Factors · CPL notes · ICAO / DGCA India provisions</p></main><script>
+// ---- tiny SVG + timeline helpers (shared by every page) ----
+const NS = 'http://www.w3.org/2000/svg';
+function E(tag, a = {}, parent) {
+  const el = document.createElementNS(NS, tag);
+  for (const k in a) {
+    const v = a[k];
+    if (v === undefined || v === null) continue;
+    if (k === 'text') { el.textContent = v; continue; }
+    if ((k === 'fill' || k === 'stroke') && typeof v === 'string' && v.startsWith('var(')) { el.style[k] = v; continue; }
+    el.setAttribute(k, v);
+  }
+  if (parent) parent.appendChild(el);
+  return el;
+}
+const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+const lerp = (a, b, p) => a + (b - a) * p;
+const ease = p => p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const ep = (t, a, b) => ease(prog(t, a, b));
+const rad = d => d * Math.PI / 180;
+const fade = (t, a, b, c, d) => (c === undefined) ? prog(t, a, b) : Math.min(prog(t, a, b), 1 - prog(t, c, d));
+function show(el, o) { el.setAttribute('opacity', clamp(o)); }
+function xf(el, x, y, r = 0, s = 1) { el.setAttribute('transform', `translate(${x},${y}) rotate(${r}) scale(${s})`); }
+function T(parent, x, y, text, cls = 'lbl', a = {}) {
+  const t = E('text', Object.assign({ x, y, class: cls }, a), parent);
+  const lines = String(text).split('\n');
+  if (lines.length === 1) t.textContent = text;
+  else lines.forEach((ln, i) => E('tspan', { x, dy: i ? '1.2em' : 0, text: ln }, t));
+  return t;
+}
+// polyline helpers
+function pathAlong(pts) { return 'M' + pts.map(p => p.join(',')).join(' L'); }
+function ptOn(pts, p) { // point + heading along polyline at fraction p
+  let L = 0; const seg = [];
+  for (let i = 1; i < pts.length; i++) { const d = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]); seg.push(d); L += d; }
+  let s = clamp(p) * L;
+  for (let i = 0; i < seg.length; i++) {
+    if (s <= seg[i] || i === seg.length - 1) {
+      const f = seg[i] ? s / seg[i] : 0, a = pts[i], b = pts[i + 1];
+      return { x: lerp(a[0], b[0], clamp(f)), y: lerp(a[1], b[1], clamp(f)), h: Math.atan2(b[0] - a[0], -(b[1] - a[1])) * 180 / Math.PI };
+    }
+    s -= seg[i];
+  }
+}
+function pathPt(pathEl, p) { // point + heading on an SVG path at fraction p (0..1)
+  const L = pathEl.getTotalLength(); const s = clamp(p) * L;
+  const a = pathEl.getPointAtLength(Math.max(0, s - .5)), b = pathEl.getPointAtLength(Math.min(L, s + .5)), c = pathEl.getPointAtLength(s);
+  return { x: c.x, y: c.y, h: Math.atan2(b.x - a.x, -(b.y - a.y)) * 180 / Math.PI };
+}
+// arrow marker defs
+function defs(svg) {
+  const d = E('defs', {}, svg);
+  const mk = (id, col) => { const m = E('marker', { id, viewBox: '0 0 10 10', refX: 8.5, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' }, d); E('path', { d: 'M0,0 L10,5 L0,10 z', fill: col }, m); };
+  mk('ah', 'var(--ink)'); mk('ahm', 'var(--muted)'); mk('ahr', 'var(--red)'); mk('ahg', 'var(--green)'); mk('ahb', 'var(--blue)'); mk('aha', 'var(--accent)'); mk('ahp', 'var(--purple)');
+  return d;
+}
+function arrow(parent, x1, y1, x2, y2, col = 'var(--ink)', w = 2, m = 'ah', a = {}) {
+  return E('line', Object.assign({ x1, y1, x2, y2, stroke: col, 'stroke-width': w, 'marker-end': `url(#${m})` }, a), parent);
+}
+function arrowPath(parent, d, col = 'var(--ink)', w = 2, m = 'ah', a = {}) {
+  return E('path', Object.assign({ d, stroke: col, 'stroke-width': w, fill: 'none', 'marker-end': `url(#${m})` }, a), parent);
+}
+// icons -------------------------------------------------------------
+const PLANE_TOP = 'M0,-19 C2.2,-19 2.8,-15 2.8,-11 L2.8,-3.5 L19,4.5 L19,8 L2.8,4 L2.2,12 L7.5,15.5 L7.5,18 L0,16.4 L-7.5,18 L-7.5,15.5 L-2.2,12 L-2.8,4 L-19,8 L-19,4.5 L-2.8,-3.5 L-2.8,-11 C-2.8,-15 -2.2,-19 0,-19 Z';
+function planeTop(parent, col = 'var(--plane)', s = 1) { const g = E('g', {}, parent); E('path', { d: PLANE_TOP, fill: col, stroke: 'var(--panel)', 'stroke-width': 1, transform: `scale(${s})` }, g); return g; }
+const PLANE_SIDE = 'M24,0.5 C24,-2.8 20,-4.2 15,-4.2 L-13,-4.2 L-19,-13 L-24,-13 L-22,-4 L-25,-2.5 L-25,1.8 L15,3.6 C20,3.6 24,2.8 24,0.5 Z M5,0 L-5,6.5 L-9.5,6.5 L-3.5,0 Z';
+function planeSide(parent, col = 'var(--plane)', s = 1) { const g = E('g', {}, parent); E('path', { d: PLANE_SIDE, fill: col, stroke: 'var(--panel)', 'stroke-width': .8, transform: `scale(${s})` }, g); return g; }
+function heliTop(parent, col = 'var(--plane3)', s = 1) {
+  const g = E('g', { transform: `scale(${s})` }, parent);
+  E('ellipse', { cx: 0, cy: -2, rx: 6, ry: 9, fill: col }, g); E('rect', { x: -1.3, y: 6, width: 2.6, height: 14, fill: col }, g); E('rect', { x: -5, y: 18, width: 10, height: 2.4, fill: col }, g);
+  E('line', { x1: -17, y1: -15, x2: 17, y2: 11, stroke: col, 'stroke-width': 1.6 }, g); E('line', { x1: -17, y1: 11, x2: 17, y2: -15, stroke: col, 'stroke-width': 1.6 }, g);
+  return g;
+}
+function gliderTop(parent, col = 'var(--purple)', s = 1) {
+  const g = E('g', { transform: `scale(${s})` }, parent);
+  E('path', { d: 'M0,-14 C1.5,-14 1.8,-10 1.6,-6 L1.2,14 L5,16 L5,17.5 L-5,17.5 L-5,16 L-1.2,14 L-1.6,-6 C-1.8,-10 -1.5,-14 0,-14Z', fill: col }, g);
+  E('path', { d: 'M-27,-3 L27,-3 L27,-0.5 L-27,-0.5Z', fill: col }, g); return g;
+}
+function balloon(parent, col = 'var(--red)', s = 1) {
+  const g = E('g', { transform: `scale(${s})` }, parent);
+  E('path', { d: 'M0,-20 C13,-20 15,-6 8,4 L3,10 L-3,10 L-8,4 C-15,-6 -13,-20 0,-20Z', fill: col }, g);
+  E('rect', { x: -3, y: 13, width: 6, height: 5, fill: 'var(--ink)' }, g); E('line', { x1: -3, y1: 10, x2: -3, y2: 13, stroke: 'var(--ink)' }, g); E('line', { x1: 3, y1: 10, x2: 3, y2: 13, stroke: 'var(--ink)' }, g);
+  return g;
+}
+function cloud(parent, x, y, s = 1, cls) {
+  const g = E('g', { transform: `translate(${x},${y}) scale(${s})` }, parent);
+  E('path', { d: 'M-40,10 C-52,10 -52,-8 -38,-8 C-38,-24 -14,-26 -10,-14 C-4,-30 22,-28 22,-12 C38,-14 42,10 28,10 Z', fill: 'var(--cloud)', stroke: 'var(--line)', 'stroke-width': 1.5 }, g);
+  return g;
+}
+function tower(parent, x, y, s = 1) {
+  const g = E('g', { transform: `translate(${x},${y}) scale(${s})` }, parent);
+  E('rect', { x: -4, y: -30, width: 8, height: 30, fill: 'var(--muted)' }, g);
+  E('path', { d: 'M-11,-30 L11,-30 L8,-42 L-8,-42Z', fill: 'var(--ink)' }, g);
+  E('rect', { x: -9, y: -40, width: 18, height: 7, fill: 'var(--sky2)' }, g);
+  return g;
+}
+// ---- runner -------------------------------------------------------
+function runScene(S) {
+  const svg = document.getElementById('svg');
+  svg.setAttribute('viewBox', S.vb || `0 0 ${S.w} ${S.h}`);
+  defs(svg);
+  S.init(svg);
+  const still = location.hash === '#still';
+  if (still) document.body.classList.add('still');
+  if (!S.duration) { S.update && S.update(0); return; }
+  const scrub = document.getElementById('scrub'), btn = document.getElementById('play'), rst = document.getElementById('restart');
+  const spd = document.getElementById('speed'), tm = document.getElementById('time'), cap = document.getElementById('caption');
+  const list = document.getElementById('steps');
+  scrub.max = S.duration; scrub.step = 0.05;
+  const btns = (S.steps || []).map((s, i) => {
+    const b = document.createElement('button'); b.type = 'button';
+    b.innerHTML = `<span class="n">${String(i + 1).padStart(2, '0')}</span><span></span>`; b.lastChild.textContent = s.text;
+    b.addEventListener('click', () => { t = s.t + 0.01; draw(); });
+    const l = document.createElement('li'); l.appendChild(b); list.appendChild(l); return b;
+  });
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let t = still ? (S.still ?? S.duration) : 0, playing = !still && !reduce, speed = 1, last = null, hold = 0;
+  if (reduce && !still) t = S.still ?? S.duration;
+  function draw() {
+    const tt = clamp(t, 0, S.duration);
+    S.update(tt);
+    if (S.view) { const v = S.view(tt); svg.setAttribute('viewBox', v.map(n => n.toFixed(1)).join(' ')); }
+    scrub.value = tt; tm.textContent = tt.toFixed(1) + ' s';
+    let cur = -1; (S.steps || []).forEach((s, i) => { if (tt >= s.t) cur = i; });
+    btns.forEach((b, i) => b.toggleAttribute('aria-current', false));
+    if (cur >= 0) { btns[cur].setAttribute('aria-current', 'step'); cap.textContent = S.steps[cur].text; }
+    btn.textContent = playing ? 'Pause' : 'Play';
+  }
+  function frame(ts) {
+    if (last === null) last = ts; const dt = Math.min(.1, (ts - last) / 1000); last = ts;
+    if (playing) {
+      if (t >= S.duration) { hold += dt; if (hold > 2.5) { t = 0; hold = 0; } }
+      else t += dt * speed;
+      draw();
+    }
+    requestAnimationFrame(frame);
+  }
+  btn.addEventListener('click', () => { playing = !playing; if (playing && t >= S.duration) t = 0; draw(); });
+  rst.addEventListener('click', () => { t = 0; hold = 0; playing = true; draw(); });
+  scrub.addEventListener('input', () => { t = +scrub.value; playing = false; draw(); });
+  spd.addEventListener('change', () => { speed = +spd.value; });
+  draw();
+  if (!still) requestAnimationFrame(frame);
+}
+
+// camera helper: list of {t, v:[x,y,w,h]} keyframes -> eased interpolation (0.7 s moves)
+function camera(keys, t, dur = .7) {
+  let cur = keys[0].v, prev = keys[0].v, k0 = 0;
+  for (let i = 0; i < keys.length; i++) if (t >= keys[i].t) { k0 = i; }
+  cur = keys[k0].v; prev = k0 ? keys[k0 - 1].v : cur;
+  const p = ease(prog(t, keys[k0].t, keys[k0].t + dur));
+  return cur.map((c, i) => lerp(prev[i], c, p));
+}
+function fitView(x, y, w, h, W, H, pad = 10) { // keep page aspect W/H
+  const r = W / H; let vw = w + 2 * pad, vh = h + 2 * pad;
+  if (vw / vh > r) vh = vw / r; else vw = vh * r;
+  return [x + w / 2 - vw / 2, y + h / 2 - vh / 2, vw, vh];
+}
+// progressively draw a path/line (0..1); arrow marker appears only when complete
+function drawP(el, p) {
+  if (!el._L) { el._L = el.getTotalLength ? el.getTotalLength() : Math.hypot(el.x2.baseVal.value - el.x1.baseVal.value, el.y2.baseVal.value - el.y1.baseVal.value); el._m = el.getAttribute('marker-end'); el.setAttribute('stroke-dasharray', `${el._L} ${el._L}`); }
+  el.setAttribute('stroke-dashoffset', el._L * (1 - clamp(p)));
+  if (el._m) { if (p >= .97) el.setAttribute('marker-end', el._m); else el.removeAttribute('marker-end'); }
+  el.setAttribute('opacity', p > 0 ? 1 : 0);
+}
+// labelled box for charts: lines = array of strings (first bold)
+function box(parent, x, y, w, h, lines, o = {}) {
+  const g = E('g', {}, parent);
+  E('rect', { x, y, width: w, height: h, rx: o.rx ?? 8, fill: o.fill || 'var(--panel)', stroke: o.stroke || 'var(--line)', 'stroke-width': o.sw || 1.5 }, g);
+  const L = Array.isArray(lines) ? lines : [lines];
+  const lh = o.lh || 17, y0 = y + h / 2 - (L.length - 1) * lh / 2 + 5;
+  L.forEach((s, i) => T(g, x + w / 2, y0 + i * lh, s, i === 0 ? (o.cls0 || 'lbl-b') : (o.cls || 'lbl-s'), { 'text-anchor': 'middle', style: o.color ? `fill:${o.color}` : null }));
+  return g;
+}
+function elbow(parent, x1, y1, x2, y2, col = 'var(--muted)', w = 1.6, arrowHead = false) {
+  const my = (y1 + y2) / 2;
+  return E('path', { d: `M${x1},${y1} V${my} H${x2} V${y2}`, fill: 'none', stroke: col, 'stroke-width': w, 'marker-end': arrowHead ? 'url(#ahm)' : null }, parent);
+}
+// detailed airliner side view (nose right), length ~ 400 units at s=1, origin = centre of fuselage
+function airlinerSide(parent, x, y, s = 1, col = 'var(--panel)') {
+  const g = E('g', { transform: `translate(${x},${y}) scale(${s})` }, parent);
+  E('path', { d: 'M-150,-62 L-118,-62 L-70,-16 L-150,-16 Z', fill: 'var(--sky2)', stroke: 'var(--ink)', 'stroke-width': 1.5 }, g); // fin
+  E('path', { d: 'M-190,-4 C-185,-14 -170,-18 -150,-20 L150,-20 C185,-20 205,-6 210,4 C205,12 190,18 150,18 L-120,18 C-160,16 -185,8 -190,-4 Z', fill: col, stroke: 'var(--ink)', 'stroke-width': 1.8 }, g); // fuselage
+  E('path', { d: 'M-172,-4 L-140,-6 L-136,-2 L-172,0 Z', fill: 'var(--sky2)', stroke: 'var(--ink)', 'stroke-width': 1.2 }, g); // stabiliser
+  E('path', { d: 'M-30,8 L60,6 L70,12 L-20,30 L-36,30 Z', fill: 'var(--sky2)', stroke: 'var(--ink)', 'stroke-width': 1.3 }, g); // wing
+  E('rect', { x: 10, y: 22, width: 46, height: 18, rx: 8, fill: 'var(--sky2)', stroke: 'var(--ink)', 'stroke-width': 1.3 }, g); // engine
+  for (let i = 0; i < 14; i++) E('rect', { x: -12 + i * 13, y: -10, width: 6, height: 7, rx: 2, fill: 'var(--muted)' }, g);
+  E('path', { d: 'M185,-10 L198,-8 L201,-2 L188,-3 Z', fill: 'var(--ink)' }, g); // cockpit window
+  E('line', { x1: -15, y1: 18, x2: -15, y2: 40, stroke: 'var(--ink)', 'stroke-width': 3 }, g); E('circle', { cx: -15, cy: 44, r: 6, fill: 'var(--ink)' }, g);
+  E('line', { x1: 160, y1: 18, x2: 160, y2: 38, stroke: 'var(--ink)', 'stroke-width': 3 }, g); E('circle', { cx: 160, cy: 42, r: 5, fill: 'var(--ink)' }, g);
+  return g;
+}
+// airliner plan view (nose up), span ~ 400 units at s=1
+function airlinerPlan(parent, x, y, s = 1, col = 'var(--panel)') {
+  const g = E('g', { transform: `translate(${x},${y}) scale(${s})` }, parent);
+  E('path', { d: 'M-18,-20 L-200,40 L-200,56 L-18,30 Z M18,-20 L200,40 L200,56 L18,30 Z', fill: col, stroke: 'var(--ink)', 'stroke-width': 1.6 }, g);
+  E('path', { d: 'M-12,140 L-80,165 L-80,176 L-10,165 Z M12,140 L80,165 L80,176 L10,165 Z', fill: col, stroke: 'var(--ink)', 'stroke-width': 1.4 }, g);
+  E('path', { d: 'M0,-190 C14,-190 20,-160 20,-130 L20,150 C20,170 10,190 0,195 C-10,190 -20,170 -20,150 L-20,-130 C-20,-160 -14,-190 0,-190 Z', fill: col, stroke: 'var(--ink)', 'stroke-width': 1.8 }, g);
+  E('rect', { x: -98, y: 0, width: 20, height: 44, rx: 8, fill: 'var(--sky2)', stroke: 'var(--ink)' }, g);
+  E('rect', { x: 78, y: 0, width: 20, height: 44, rx: 8, fill: 'var(--sky2)', stroke: 'var(--ink)' }, g);
+  return g;
+}
+// sector wedge, angles clockwise from north (deg)
+function wedgeD(cx, cy, r, a1, a2, r0 = 0) {
+  const p = (a, R) => [cx + R * Math.sin(rad(a)), cy - R * Math.cos(rad(a))];
+  const large = ((a2 - a1 + 360) % 360) > 180 ? 1 : 0;
+  const [x1, y1] = p(a1, r), [x2, y2] = p(a2, r);
+  if (!r0) return `M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} Z`;
+  const [x3, y3] = p(a2, r0), [x4, y4] = p(a1, r0);
+  return `M${x4},${y4} L${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} L${x3},${y3} A${r0},${r0} 0 ${large} 0 ${x4},${y4} Z`;
+}
+function polar(cx, cy, r, a) { return [cx + r * Math.sin(rad(a)), cy - r * Math.cos(rad(a))]; }
+// place a side-view plane (nose right) along a heading, flipping when moving left so it stays upright
+function sideXf(el, x, y, h, s = 1) {
+  h = ((h % 360) + 360) % 360;
+  if (h > 180) el.setAttribute('transform', `translate(${x},${y}) rotate(${h - 270}) scale(${-s},${s})`);
+  else el.setAttribute('transform', `translate(${x},${y}) rotate(${h - 90}) scale(${s})`);
+}
+// keyframe motion: keys = [[t,x,y],...] -> {x,y,h}
+function kf(keys, t) {
+  if (t <= keys[0][0]) { const a = keys[0], b = keys[1]; return { x: a[1], y: a[2], h: Math.atan2(b[1] - a[1], -(b[2] - a[2])) * 180 / Math.PI }; }
+  for (let i = 1; i < keys.length; i++) {
+    const a = keys[i - 1], b = keys[i];
+    if (t <= b[0]) {
+      const p = (t - a[0]) / (b[0] - a[0]);
+      // smooth heading: blend with next segment near the end
+      let h = Math.atan2(b[1] - a[1], -(b[2] - a[2])) * 180 / Math.PI;
+      if (i < keys.length - 1 && p > .6) { const c = keys[i + 1]; let h2 = Math.atan2(c[1] - b[1], -(c[2] - b[2])) * 180 / Math.PI; let d = ((h2 - h + 540) % 360) - 180; h += d * (p - .6) / .8; }
+      if (i > 1 && p < .4) { const z = keys[i - 2]; let h0 = Math.atan2(a[1] - z[1], -(a[2] - z[2])) * 180 / Math.PI; let d = ((h - h0 + 540) % 360) - 180; h -= d * (.4 - p) / .8; }
+      return { x: lerp(a[1], b[1], p), y: lerp(a[2], b[2], p), h };
+    }
+  }
+  const a = keys[keys.length - 2], b = keys[keys.length - 1];
+  return { x: b[1], y: b[2], h: Math.atan2(b[1] - a[1], -(b[2] - a[2])) * 180 / Math.PI };
+}
+const FIGHTER = 'M0,-21 L3.5,-8 L17,7 L17,10.5 L4,8 L5,14 L9,17.5 L-9,17.5 L-5,14 L-4,8 L-17,10.5 L-17,7 L-3.5,-8 Z';
+function fighterTop(parent, col = 'var(--red)', s = 1) { const g = E('g', {}, parent); E('path', { d: FIGHTER, fill: col, stroke: 'var(--panel)', 'stroke-width': 1, transform: `scale(${s})` }, g); return g; }
+// trail polyline from keyframes up to time t
+function trailD(keys, t, n = 40) { const t0 = keys[0][0], t1 = Math.min(t, keys[keys.length - 1][0]); if (t1 <= t0) return ''; let d = ''; for (let i = 0; i <= n; i++) { const q = kf(keys, lerp(t0, t1, i / n)); d += (i ? 'L' : 'M') + q.x.toFixed(1) + ',' + q.y.toFixed(1); } return d; }
+function shipTop(parent, col = 'var(--ink)', s = 1) { const g = E('g', { transform: `scale(${s})` }, parent); E('path', { d: 'M0,-22 C7,-12 8,-2 8,8 L7,20 L-7,20 L-8,8 C-8,-2 -7,-12 0,-22 Z', fill: col }, g); E('rect', { x: -4, y: -2, width: 8, height: 10, fill: 'var(--panel)' }, g); return g; }
+
+//@title Freedoms of the Air
+//@chapter Chapter 2 · International Organisations and Conventions
+//@desc Each panel shows an airline of the home State (India) and what it may do in a foreign State. Freedoms 1–2 are technical, 3–5 commercial (Chicago 1944); 6–9 are not in any convention.
+//@keys 1st and 2nd freedoms – Transit Agreement 1944 (ratified by India) || 3rd, 4th and 5th – Air Transport Agreement 1944 (not ratified by India) || 6th = 3rd + 4th through the home State || 8th and 9th are cabotage – carriage inside a foreign State
+const S = {
+  w: 810, h: 552, duration: 28.5, still: 28.5,
+  steps: [
+    { t: 0, text: '1st freedom – fly across a foreign State without landing.' },
+    { t: 3, text: '2nd freedom – land in a foreign State for non-traffic purposes (fuel, repair) only.' },
+    { t: 6, text: '3rd freedom – put down in B passengers/cargo taken on in the home State.' },
+    { t: 9, text: '4th freedom – take on in B passengers/cargo destined for the home State.' },
+    { t: 12, text: '5th freedom – on a flight from home, carry traffic between two foreign States B and C.' },
+    { t: 15, text: '6th freedom – carry traffic from B to C via the home State (3rd + 4th combined).' },
+    { t: 18, text: '7th freedom – carry traffic between B and C without touching the home State.' },
+    { t: 21, text: '8th freedom (consecutive cabotage) – carry traffic between two points in B on a flight from home.' },
+    { t: 24, text: '9th freedom (stand-alone cabotage) – carry traffic inside B with no link to home.' },
+    { t: 27, text: 'Summary: 1–2 technical, 3–5 commercial; 6–9 only bilateral practice.' }
+  ],
+  init(svg) {
+    const P = [
+      { n: '1st', t: 'Overfly', nodes: [['H', 40, 100], ['B', 125, 100], ['C', 210, 100]], route: [[40, 100], [125, 40], [210, 100]], badges: [[125, 132, 'no landing', 'var(--muted)']] },
+      { n: '2nd', t: 'Technical stop', nodes: [['H', 40, 100], ['B', 125, 100], ['C', 210, 100]], route: [[40, 100], [125, 100], [210, 100]], badges: [[125, 132, 'lands: fuel / repair only', 'var(--muted)']] },
+      { n: '3rd', t: 'Set down from home', nodes: [['H', 55, 100], ['B', 195, 100]], route: [[55, 100], [195, 100]], badges: [[195, 132, '▼ set down', 'var(--red)']] },
+      { n: '4th', t: 'Pick up for home', nodes: [['B', 55, 100], ['H', 195, 100]], route: [[55, 100], [195, 100]], badges: [[55, 132, '▲ take on', 'var(--green)']] },
+      { n: '5th', t: 'Between two foreign States', nodes: [['H', 40, 100], ['B', 125, 100], ['C', 210, 100]], route: [[40, 100], [125, 100], [210, 100]], badges: [[125, 132, '▲ take on', 'var(--green)'], [210, 132, '▼ set down', 'var(--red)']] },
+      { n: '6th', t: 'Via the home State', nodes: [['B', 40, 100], ['H', 125, 100], ['C', 210, 100]], route: [[40, 100], [125, 100], [210, 100]], badges: [[40, 132, '▲ take on', 'var(--green)'], [210, 132, '▼ set down', 'var(--red)']] },
+      { n: '7th', t: 'Outside the home State', nodes: [['H', 125, 62], ['B', 55, 112], ['C', 195, 112]], route: [[55, 112], [195, 112]], badges: [[55, 144, '▲ take on', 'var(--green)'], [195, 144, '▼ set down', 'var(--red)']], dashHome: true },
+      { n: '8th', t: 'Consecutive cabotage', nodes: [['H', 35, 100], ['B1', 140, 100], ['B2', 215, 100]], box: [108, 66, 136, 78], route: [[35, 100], [140, 100], [215, 100]], badges: [[140, 154, '▲ take on', 'var(--green)'], [215, 154, '▼ set down', 'var(--red)']] },
+      { n: '9th', t: 'Stand-alone cabotage', nodes: [['H', 40, 62], ['B1', 115, 110], ['B2', 210, 110]], box: [85, 76, 158, 70], route: [[115, 110], [210, 110]], badges: [[115, 160, '▲ take on', 'var(--green)'], [210, 160, '▼ set down', 'var(--red)']], dashHome: true },
+    ];
+    this.panels = [];
+    P.forEach((p, i) => {
+      const cx = 10 + (i % 3) * 265, cy = 10 + Math.floor(i / 3) * 175;
+      const g = E('g', { transform: `translate(${cx},${cy})` }, svg);
+      const frame = E('rect', { x: 0, y: 0, width: 255, height: 165, rx: 8, fill: 'var(--panel)', stroke: 'var(--line)', 'stroke-width': 1.5 }, g);
+      E('rect', { x: 0, y: 0, width: 46, height: 26, rx: 6, fill: i < 2 ? 'var(--blue)' : i < 5 ? 'var(--accent)' : 'var(--muted)' }, g);
+      T(g, 23, 18, p.n, 'lbl-b', { 'text-anchor': 'middle', fill: '#fff', style: 'fill:#fff' });
+      T(g, 54, 18, p.t, 'lbl-b');
+      if (p.box) { E('rect', { x: p.box[0], y: p.box[1], width: p.box[2], height: p.box[3], rx: 10, fill: 'var(--sky)', stroke: 'var(--blue)', 'stroke-dasharray': '5 4' }, g); T(g, p.box[0] + p.box[2] / 2, p.box[1] + 13, 'Foreign State B', 'lbl-xs', { 'text-anchor': 'middle' }); }
+      const rr = (pt) => { const nd = p.nodes.find(n => n[1] === pt[0] && n[2] === pt[1]); return nd ? (nd[0] === 'H' ? 19 : nd[0].length > 1 ? 14 : 17) + 4 : 0; };
+      const pts = p.route.map(q => q.slice());
+      const trim = (a, b) => { const r = rr(a); const d = Math.hypot(b[0] - a[0], b[1] - a[1]); return [a[0] + (b[0] - a[0]) * r / d, a[1] + (b[1] - a[1]) * r / d]; };
+      pts[0] = trim(p.route[0], p.route[1]); pts[pts.length - 1] = trim(p.route[p.route.length - 1], p.route[p.route.length - 2]);
+      const dd = p.n === '1st' ? `M${pts[0]} Q125,30 ${pts[2] ? pts[pts.length - 1] : ''}` : pathAlong(pts);
+      const rt = E('path', { d: dd, fill: 'none', stroke: 'var(--ink)', 'stroke-width': 2, 'stroke-dasharray': '1 0', 'marker-end': 'url(#ah)' }, g);
+      p.nodes.forEach(([id, x, y]) => {
+        const home = id === 'H';
+        const c = E('circle', { cx: x, cy: y, r: home ? 19 : (id.length > 1 ? 14 : 17), fill: home ? 'var(--accent)' : 'var(--sky2)', stroke: home ? 'var(--accent)' : 'var(--blue)', 'stroke-width': 1.5 }, g);
+        if (home && p.dashHome) { c.setAttribute('fill', 'none'); c.setAttribute('stroke-dasharray', '4 3'); }
+        T(g, x, y + 5, home ? 'IND' : id, home ? 'lbl-b' : 'lbl-s', { 'text-anchor': 'middle' });
+        if (home && p.dashHome) T(g, x + 26, y + 4, 'home (not touched)', 'lbl-xs');
+      });
+      const bs = p.badges.map(([x, y, tx, col]) => T(g, x, y, tx, 'lbl-s', { 'text-anchor': 'middle', style: `fill:${col};font-weight:700` }));
+      const pl = planeTop(g, 'var(--plane)', .8);
+      const L = 0;
+      this.panels.push({ frame, rt, L, pl, bs, p });
+    });
+    this.legend = T(svg, 405, 546, 'IND = home State (India) · ▲ take on traffic · ▼ set down traffic', 'lbl-xs', { 'text-anchor': 'middle' });
+  },
+  view(t) {
+    const keys = [];
+    for (let i = 0; i < 9; i++) { const cx = 10 + (i % 3) * 265, cy = 10 + Math.floor(i / 3) * 175; keys.push({ t: i * 3, v: fitView(cx, cy, 255, 165, this.w, this.h) }); }
+    keys.push({ t: 27, v: [0, 0, this.w, this.h] });
+    return camera(keys, t);
+  },
+  update(t) {
+    this.panels.forEach((P, i) => {
+      const a = i * 3, pr = t >= 27 ? 1 : prog(t, a + .3, a + 2.6);
+      const active = t >= a && t < a + 3 && t < 27;
+      P.frame.setAttribute('stroke', active ? 'var(--accent)' : 'var(--line)'); P.frame.setAttribute('stroke-width', active ? 3 : 1.5);
+      drawP(P.rt, t >= a ? Math.max(pr, .001) : 0);
+      const sp = { '2nd': .27, '5th': .76, '6th': .76, '8th': .78 }[P.p.n] ?? .5;
+      const q = pathPt(P.rt, t >= 27 ? sp : Math.min(pr, .93));
+      xf(P.pl, q.x, q.y, q.h, .8); show(P.pl, t >= a ? 1 : .0);
+      P.bs.forEach(b => show(b, t >= a + 1.2 || t >= 27 ? 1 : 0));
+    });
+  }
+};
+
+runScene(S);
+</script></body></html>
